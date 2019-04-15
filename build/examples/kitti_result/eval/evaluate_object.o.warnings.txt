@@ -1,0 +1,25 @@
+examples/kitti_result/eval/evaluate_object.cpp: In function ‘std::vector<double> getThresholds(std::vector<double>&, double)’:
+examples/kitti_result/eval/evaluate_object.cpp:242:32: warning: variable ‘recall’ set but not used [-Wunused-but-set-variable]
+     double l_recall, r_recall, recall;
+                                ^
+examples/kitti_result/eval/evaluate_object.cpp: In function ‘void saveAndPlotPlots(std::string, std::string, std::string, std::vector<double>*, bool)’:
+examples/kitti_result/eval/evaluate_object.cpp:621:20: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+     system(command);
+                    ^
+examples/kitti_result/eval/evaluate_object.cpp:626:18: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+   system(command);
+                  ^
+examples/kitti_result/eval/evaluate_object.cpp:628:18: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+   system(command);
+                  ^
+examples/kitti_result/eval/evaluate_object.cpp:630:18: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+   system(command);
+                  ^
+examples/kitti_result/eval/evaluate_object.cpp: In function ‘bool eval(std::string, std::string, std::string)’:
+examples/kitti_result/eval/evaluate_object.cpp:641:40: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+   system(("mkdir " + plot_dir).c_str());
+                                        ^
+examples/kitti_result/eval/evaluate_object.cpp: In function ‘int32_t main(int32_t, char**)’:
+examples/kitti_result/eval/evaluate_object.cpp:777:44: warning: ignoring return value of ‘int system(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+     system(("rm -r " + result_dir).c_str());
+                                            ^

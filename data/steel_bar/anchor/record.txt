@@ -1,0 +1,15 @@
+field1_w 1: 38
+field1_w 2: 47
+field1_w 3: 57
+field1_w 4: 68
+field1_w 5: 80
+field1_w 6: 95
+field1_w 7: 119
+
+field1_h 1: 39
+field1_h 2: 48
+field1_h 3: 58
+field1_h 4: 69
+field1_h 5: 81
+field1_h 6: 97
+field1_h 7: 119
