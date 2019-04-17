@@ -1,0 +1,218 @@
+ input:"input"
+ input_dim: 1
+input_dim: 3
+input_dim: 768
+input_dim: 1344
+layer {
+  name: "G"
+  type: "Convolution"
+  bottom: "input"
+  top: "G"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    kernel_size: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.0
+    }
+  }
+}
+ 
+ 
+ 
+layer {
+  name: "Theta"
+  type: "Convolution"
+  bottom: "input"
+  top: "Theta"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    kernel_size: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.0
+    }
+  }
+}
+ 
+ 
+layer {
+  name: "Phi"
+  type: "Convolution"
+  bottom: "input"
+  top: "Phi"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    kernel_size: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.0
+    }
+  }
+}
+
+layer {
+    name: "reshape_Theta"
+    type: "Reshape"
+    bottom: "Theta"
+    top: "output_Theta"
+    reshape_param {
+      shape {
+        dim: 0  # copy the dimension from below
+        dim: 512
+        dim: -1 # infer it from the other dimensions
+      }
+    }
+}
+ 
+ 
+layer {
+    name: "reshape_Phi"
+    type: "Reshape"
+    bottom: "Phi"
+    top: "output_Phi"
+    reshape_param {
+      shape {
+        dim: 0  # copy the dimension from below
+        dim: 512
+        dim: -1 # infer it from the other dimensions
+      }
+    }
+}
+ 
+layer {
+    name: "reshape_G"
+    type: "Reshape"
+    bottom: "G"
+    top: "output_G"
+    reshape_param {
+      shape {
+        dim: 0  # copy the dimension from below
+        dim: 512
+        dim: -1 # infer it from the other dimensions
+      }
+    }
+}
+
+layer {
+    name: "MM_Theta_Phi"
+    type: "MatMul"
+  #type: "MatMul"
+    bottom: "output_Theta"
+  bottom: "output_Phi"
+    top: "MM_Theta_Phi"
+    matmul_param{
+    transpose_a: true
+    transpose_b: false
+    }
+}
+ 
+layer {
+  name: "MM_Theta_Phi_soft"
+  type: "Softmax"
+  bottom: "MM_Theta_Phi"
+  top: "MM_Theta_Phi_soft"
+  SoftmaxParameter {
+     axis:2
+  }
+}
+ 
+layer {
+    name: "MM_o"
+    type: "MatMul"
+  #type: "MatMul"
+    bottom: "output_G"
+    bottom: "MM_Theta_Phi_soft"
+    top: "MM_o"
+    matmul_param{
+    transpose_a: false
+    transpose_b: true
+    }
+}
+ 
+layer {
+    name: "re_MM"
+    type: "Reshape"
+    bottom: "MM_o"
+    top: "re_MM"
+    reshape_param {
+      shape {
+        dim: 0  # copy the dimension from below
+        dim: 0
+    dim: 176 # infer it from the other dimensions
+        dim: -1 # infer it from the other dimensions
+      }
+    }
+}
+ 
+ 
+layer {
+  name: "conv_re"
+  type: "Convolution"
+  bottom: "re_MM"
+  top: "conv_re"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 1024
+    kernel_size: 1
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0.0
+    }
+  }
+}
+ 
+layer{
+  name: "ele"
+  type: "Eltwise"
+  bottom: "input"
+  bottom: "conv_re"
+  top: "ele_out"
+}

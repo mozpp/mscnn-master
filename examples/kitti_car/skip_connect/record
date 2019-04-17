@@ -1,0 +1,2 @@
+skip connect版本：
+1，类似FPN，把conv3的特征图concat到conv4_3_2x上（就是concatenate到RPN之后的特征图上），效果不行。
