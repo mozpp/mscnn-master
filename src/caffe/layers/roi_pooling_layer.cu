@@ -45,9 +45,10 @@ __global__ void ROIPoolForward(const int nthreads, const Dtype* bottom_data,
     roi_end_w = min(img_width-1,roi_end_w);
     roi_end_h = min(img_height-1,roi_end_h);*/
 
-    // Force malformed ROIs to be 1x1
+    // Force malformed ROIs to be 1x1 避免ROI的大小小于1*1
     int roi_width = max(roi_end_w - roi_start_w + 1, 1);
     int roi_height = max(roi_end_h - roi_start_h + 1, 1);
+    //计算pooling后的坐标，ROI Pooling是固定宽高的
     Dtype bin_size_h = static_cast<Dtype>(roi_height)
                        / static_cast<Dtype>(pooled_height);
     Dtype bin_size_w = static_cast<Dtype>(roi_width)
